@@ -11,7 +11,7 @@ html, body {
     font-family: "Helvetica Neue", Helvetica, sans-serif;
     font-size: 14px;
     color: #333;
-    background-color: #f1f1f1;
+    background-color: #f5f5f5;
     overflow: hidden;
 }
 
@@ -29,46 +29,54 @@ a {
     padding: 8px 16px;
     background-color: #07c160;
     color: #fff;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 14px;
     border: none;
     outline: none;
     cursor: pointer;
+    box-shadow: 0 2px 5px rgba(7, 193, 96, 0.2);
+    transition: all 0.3s ease;
 }
 
 .btn:active {
     background-color: #06ae56;
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(7, 193, 96, 0.2);
 }
 
 .btn-gray {
-    background-color: #eee;
+    background-color: #f2f2f2;
     color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .btn-gray:active {
-    background-color: #ddd;
+    background-color: #e6e6e6;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .header-bar {
     height: 44px;
-    background-color: #f7f7fa;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 0 15px;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .header-title {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
     flex: 1;
+    color: #333;
 }
 
 .header-left, .header-right {
@@ -83,6 +91,7 @@ a {
     width: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    background-color: #f5f5f5;
 }
 
 /* 加载样式 */
@@ -113,11 +122,44 @@ a {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.75);
     color: #fff;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 12px 18px;
+    border-radius: 8px;
     max-width: 80%;
     text-align: center;
     z-index: 9999;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 添加卡片样式 */
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    margin: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 美化输入框 */
+input, textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #07c160;
+    box-shadow: 0 0 0 2px rgba(7, 193, 96, 0.1);
+}
+
+/* 头像通用样式 */
+.avatar {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f1f1f1;
 } 

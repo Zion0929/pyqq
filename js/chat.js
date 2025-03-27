@@ -107,6 +107,16 @@ function generateWelcomeMessage(friend, userId) {
  */
 function getChatMessages(userId, friendId, limit) {
     return new Promise((resolve, reject) => {
+        // 确保数据库已初始化
+        if (!db) {
+            // 先初始化数据库
+            initStorage().then(() => {
+                // 递归调用自身，此时数据库已初始化
+                getChatMessages(userId, friendId, limit).then(resolve).catch(reject);
+            }).catch(reject);
+            return;
+        }
+        
         // 先从存储中获取消息
         getAiFriend(friendId).then(friend => {
             if (!friend) {

@@ -1,14 +1,15 @@
 /**
  * Vercel朋友圈API端点
- * 负责接收朋友圈内容并调用PaiCloud API获取AI评论
+ * 负责接收朋友圈内容并调用派欧云API获取AI评论
  */
 
 // 导入axios用于HTTP请求
 const axios = require('axios');
 
-// PaiCloud API配置
+// 派欧云API配置
 const PAICLOUD_API_URL = process.env.PAICLOUD_API_URL || 'https://api.paicloud.com/v1/chat/completions';
 const PAICLOUD_API_KEY = process.env.PAICLOUD_API_KEY || '';
+const MODEL = 'deepseek/deepseek-v3-0324';
 
 /**
  * 处理朋友圈评论请求
@@ -70,7 +71,7 @@ module.exports = async (req, res) => {
             { role: "user", content: userPrompt }
         ];
         
-        // 调用PaiCloud API
+        // 调用派欧云API
         const comment = await callPaiCloudAPI(messages, friend);
         
         return res.status(200).json({ comment });
@@ -90,7 +91,7 @@ module.exports = async (req, res) => {
 };
 
 /**
- * 调用PaiCloud API获取评论
+ * 调用派欧云API获取评论
  * @param {Array} messages - 消息
  * @param {Object} friend - AI好友信息
  * @returns {Promise<string>} AI生成的评论
@@ -99,15 +100,15 @@ async function callPaiCloudAPI(messages, friend) {
     try {
         // 检查API密钥
         if (!PAICLOUD_API_KEY) {
-            console.warn('未设置PaiCloud API密钥，使用模拟响应');
+            console.warn('未设置派欧云API密钥，使用模拟响应');
             return generateMockComment(messages[1].content, friend);
         }
         
-        // 调用PaiCloud API
+        // 调用派欧云API
         const response = await axios.post(
             PAICLOUD_API_URL,
             {
-                model: "pai-001-light", // 使用合适的模型，请根据PaiCloud的实际模型调整
+                model: MODEL, // 使用DeepSeek模型
                 messages: messages,
                 temperature: 0.7,
                 max_tokens: 100,
@@ -127,7 +128,7 @@ async function callPaiCloudAPI(messages, friend) {
             throw new Error('AI服务返回了无效的响应格式');
         }
     } catch (error) {
-        console.error('调用PaiCloud API时出错:', error);
+        console.error('调用派欧云API时出错:', error);
         
         // 如果API调用失败，返回模拟评论
         return generateMockComment(messages[1].content, friend);

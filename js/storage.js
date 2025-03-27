@@ -255,7 +255,11 @@ function saveChatMessage(message) {
 function getMoments(limit) {
     return new Promise((resolve, reject) => {
         if (!db) {
-            reject(new Error('数据库未初始化'));
+            // 先初始化数据库
+            initStorage().then(() => {
+                // 递归调用自身，此时数据库已初始化
+                getMoments(limit).then(resolve).catch(reject);
+            }).catch(reject);
             return;
         }
         
@@ -296,7 +300,11 @@ function getMoments(limit) {
 function saveMoment(moment) {
     return new Promise((resolve, reject) => {
         if (!db) {
-            reject(new Error('数据库未初始化'));
+            // 先初始化数据库
+            initStorage().then(() => {
+                // 递归调用自身，此时数据库已初始化
+                saveMoment(moment).then(resolve).catch(reject);
+            }).catch(reject);
             return;
         }
         
@@ -322,7 +330,11 @@ function saveMoment(moment) {
 function addMomentComment(comment) {
     return new Promise((resolve, reject) => {
         if (!db) {
-            reject(new Error('数据库未初始化'));
+            // 先初始化数据库
+            initStorage().then(() => {
+                // 递归调用自身，此时数据库已初始化
+                addMomentComment(comment).then(resolve).catch(reject);
+            }).catch(reject);
             return;
         }
         

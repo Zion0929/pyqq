@@ -1,14 +1,15 @@
 /**
  * Vercel聊天API端点
- * 负责接收聊天消息并调用PaiCloud API获取回复
+ * 负责接收聊天消息并调用派欧云API获取回复
  */
 
 // 导入axios用于HTTP请求
 const axios = require('axios');
 
-// PaiCloud API配置
+// 派欧云API配置
 const PAICLOUD_API_URL = process.env.PAICLOUD_API_URL || 'https://api.paicloud.com/v1/chat/completions';
 const PAICLOUD_API_KEY = process.env.PAICLOUD_API_KEY || '';
+const MODEL = 'deepseek/deepseek-v3-0324';
 
 /**
  * 处理聊天请求
@@ -64,7 +65,7 @@ module.exports = async (req, res) => {
         // 添加当前用户消息
         messages.push({ role: "user", content: message });
         
-        // 调用PaiCloud API
+        // 调用派欧云API
         const response = await callPaiCloudAPI(messages);
         
         return res.status(200).json({ reply: response });
@@ -84,7 +85,7 @@ module.exports = async (req, res) => {
 };
 
 /**
- * 调用PaiCloud API获取回复
+ * 调用派欧云API获取回复
  * @param {Array} messages - 消息历史
  * @returns {Promise<string>} AI回复的内容
  */
@@ -92,18 +93,18 @@ async function callPaiCloudAPI(messages) {
     try {
         // 检查API密钥
         if (!PAICLOUD_API_KEY) {
-            console.warn('未设置PaiCloud API密钥，使用模拟响应');
+            console.warn('未设置派欧云API密钥，使用模拟响应');
             return generateMockResponse(messages);
         }
         
-        // 调用PaiCloud API
+        // 调用派欧云API (兼容OpenAI格式)
         const response = await axios.post(
             PAICLOUD_API_URL,
             {
-                model: "pai-001-light", // 使用合适的模型，请根据PaiCloud的实际模型调整
+                model: MODEL, // 使用DeepSeek模型
                 messages: messages,
                 temperature: 0.7,
-                max_tokens: 512,
+                max_tokens: 1000,
             },
             {
                 headers: {
@@ -120,7 +121,7 @@ async function callPaiCloudAPI(messages) {
             throw new Error('AI服务返回了无效的响应格式');
         }
     } catch (error) {
-        console.error('调用PaiCloud API时出错:', error);
+        console.error('调用派欧云API时出错:', error);
         
         // 如果API调用失败，返回模拟响应
         return generateMockResponse(messages);

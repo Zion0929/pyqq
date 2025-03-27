@@ -188,8 +188,10 @@
         
         // 初始化聊天
         function initChat() {
-            // 获取好友信息
-            getAiFriend(chatId).then(function(friend) {
+            // 先初始化数据库，然后再获取好友信息
+            initStorage().then(function() {
+                return getAiFriend(chatId);
+            }).then(function(friend) {
                 if (friend) {
                     currentFriend = friend;
                     document.getElementById('chatTitle').textContent = friend.name;

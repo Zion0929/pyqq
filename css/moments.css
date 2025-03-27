@@ -8,6 +8,9 @@
     background-color: #000;
     position: relative;
     overflow: hidden;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .moments-cover {
@@ -28,17 +31,18 @@
 .user-name {
     color: #fff;
     font-size: 16px;
-    font-weight: bold;
-    margin-right: 10px;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+    margin-right: 15px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .user-avatar {
     width: 70px;
     height: 70px;
-    border-radius: 5px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
     overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .user-avatar img {
@@ -49,26 +53,30 @@
 
 /* 朋友圈列表 */
 .moments-container {
-    background-color: #fff;
-    padding-bottom: 50px; /* 给底部按钮留出空间 */
+    background-color: #f5f5f5;
+    padding-bottom: 70px; /* 给底部按钮留出空间 */
 }
 
 .moment-item {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+    padding: 18px;
+    background-color: #fff;
+    margin: 10px;
+    border-radius: 12px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
 }
 
 .moment-header {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .moment-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 3px;
-    margin-right: 10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    margin-right: 12px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .moment-avatar img {
@@ -83,9 +91,9 @@
 
 .moment-name {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
     color: #576b95;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .moment-time {
@@ -94,31 +102,34 @@
 }
 
 .moment-content {
-    margin-left: 50px;
-    margin-bottom: 10px;
+    margin-left: 57px;
+    margin-bottom: 12px;
 }
 
 .moment-text {
     font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    line-height: 1.6;
+    margin-bottom: 12px;
     word-break: break-word;
+    color: #333;
 }
 
 /* 朋友圈图片 */
 .moment-images {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .moment-image {
     width: calc(33.333% - 6px);
-    margin-right: 8px;
-    margin-bottom: 8px;
+    margin-right: 9px;
+    margin-bottom: 9px;
     background-color: #f1f1f1;
     position: relative;
     overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .moment-image:nth-child(3n) {
@@ -145,6 +156,7 @@
     width: 200px;
     max-width: 66%;
     margin-right: 0;
+    border-radius: 10px;
 }
 
 .moment-images.single .moment-image::before {
@@ -157,7 +169,10 @@
     max-width: 300px;
     height: 200px;
     background-color: #000;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* 朋友圈操作 */
@@ -165,7 +180,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-left: 50px;
+    margin-left: 57px;
 }
 
 .moment-like,
@@ -174,16 +189,25 @@
     color: #576b95;
     margin-left: 15px;
     cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: background-color 0.2s;
+}
+
+.moment-like:active,
+.moment-comment:active {
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .moment-actions-menu {
     display: none;
     position: absolute;
-    right: 15px;
+    right: 20px;
     background-color: #4c4c4c;
-    border-radius: 3px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
     z-index: 10;
+    overflow: hidden;
 }
 
 .moment-actions-menu.show {
@@ -191,36 +215,40 @@
 }
 
 .moment-action-item {
-    padding: 10px 15px;
+    padding: 12px 20px;
     color: #fff;
     font-size: 14px;
     text-align: center;
-    min-width: 80px;
+    min-width: 100px;
+}
+
+.moment-action-item:active {
+    background-color: #3a3a3a;
 }
 
 .moment-actions-menu::before {
     content: "";
     position: absolute;
-    top: -6px;
+    top: -8px;
     right: 20px;
-    border-width: 0 6px 6px;
+    border-width: 0 8px 8px;
     border-style: solid;
     border-color: transparent transparent #4c4c4c;
 }
 
 /* 朋友圈评论区 */
 .moment-comments {
-    margin-left: 50px;
-    margin-top: 10px;
+    margin-left: 57px;
+    margin-top: 12px;
     background-color: #f7f7f7;
-    border-radius: 3px;
-    padding: 8px 10px;
+    border-radius: 8px;
+    padding: 10px 12px;
 }
 
 .comment-item {
     font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 5px;
+    line-height: 1.6;
+    margin-bottom: 6px;
     word-break: break-word;
 }
 
@@ -230,17 +258,17 @@
 
 .comment-name {
     color: #576b95;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 /* 朋友圈点赞区 */
 .moment-likes {
-    margin-left: 50px;
-    margin-top: 10px;
+    margin-left: 57px;
+    margin-top: 12px;
     background-color: #f7f7f7;
-    border-radius: 3px 3px 0 0;
-    padding: 8px 10px;
-    border-bottom: 1px solid #eee;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .like-icon {
@@ -248,17 +276,15 @@
     width: 16px;
     height: 16px;
     background-color: #576b95;
-    color: #fff;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 16px;
-    font-size: 10px;
+    mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='24' height='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' fill='%23FFF'/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='24' height='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' fill='%23FFF'/%3E%3C/svg%3E");
+    mask-size: contain;
+    -webkit-mask-size: contain;
     margin-right: 5px;
     vertical-align: -3px;
 }
 
 .like-names {
-    display: inline;
     font-size: 14px;
     color: #576b95;
 }
@@ -266,56 +292,61 @@
 /* 发布按钮 */
 .publish-btn {
     position: fixed;
-    bottom: 20px;
     right: 20px;
+    bottom: 70px;
     width: 50px;
     height: 50px;
+    border-radius: 25px;
     background-color: #07c160;
     color: #fff;
-    border-radius: 50%;
+    font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 10px rgba(7, 193, 96, 0.3);
     z-index: 100;
 }
 
-/* 发布页面样式 */
+.publish-btn:active {
+    background-color: #06ae56;
+    transform: scale(0.95);
+}
+
+/* 发布朋友圈 */
 .publish-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    padding: 15px;
+    background-color: #fff;
     height: 100%;
-    background-color: #f5f5f5;
-    z-index: 200;
+    display: flex;
+    flex-direction: column;
 }
 
 .publish-textarea {
+    flex: 1;
     width: 100%;
-    min-height: 100px;
-    padding: 15px;
-    border: none;
-    outline: none;
-    resize: none;
+    padding: 10px;
     font-size: 16px;
-    line-height: 1.5;
+    border: none;
+    resize: none;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
 }
 
 .publish-media {
     display: flex;
     flex-wrap: wrap;
-    padding: 0 15px 15px;
+    margin-bottom: 20px;
 }
 
 .media-item {
     width: calc(33.333% - 8px);
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-right: 12px;
+    margin-bottom: 12px;
     background-color: #f1f1f1;
     position: relative;
     overflow: hidden;
+    border-radius: 10px;
 }
 
 .media-item:nth-child(3n) {
@@ -345,25 +376,26 @@
     height: 20px;
     background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
-    border-radius: 50%;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    border-radius: 10px;
+    z-index: 1;
 }
 
 .media-add {
     width: calc(33.333% - 8px);
-    margin-right: 10px;
-    margin-bottom: 10px;
-    background-color: #f1f1f1;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    background-color: #f5f5f5;
     position: relative;
-    overflow: hidden;
+    border: 1px dashed #ddd;
+    border-radius: 10px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
-    color: #999;
 }
 
 .media-add:nth-child(3n) {
@@ -378,11 +410,6 @@
 
 .media-add-icon {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 24px;
+    color: #999;
 } 

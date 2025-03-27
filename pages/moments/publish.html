@@ -247,8 +247,14 @@
         
         // 初始化发布页面
         function initPublish() {
-            // 更新发布按钮状态
-            updatePublishButton();
+            // 先初始化数据库
+            initStorage().then(function() {
+                // 更新发布按钮状态
+                updatePublishButton();
+            }).catch(function(error) {
+                console.error('初始化数据库失败:', error);
+                showToast('初始化失败');
+            });
         }
         
         // 更新发布按钮状态
@@ -545,8 +551,10 @@
                 }
             });
             
-            // 保存朋友圈
-            saveMoment(moment).then(function() {
+            // 确保数据库已初始化，然后保存朋友圈
+            initStorage().then(function() {
+                return saveMoment(moment);
+            }).then(function() {
                 showToast('发布成功');
                 
                 // 延迟返回，让用户看到提示

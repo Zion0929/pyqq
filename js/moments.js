@@ -77,6 +77,16 @@ function getMomentsFeed(limit, offset) {
 function addAiComments(momentId) {
     // 获取朋友圈
     return new Promise((resolve, reject) => {
+        // 确保数据库已初始化
+        if (!db) {
+            // 先初始化数据库
+            initStorage().then(() => {
+                // 递归调用自身，此时数据库已初始化
+                addAiComments(momentId).then(resolve).catch(reject);
+            }).catch(reject);
+            return;
+        }
+        
         const transaction = db.transaction(STORES.MOMENTS, 'readonly');
         const store = transaction.objectStore(STORES.MOMENTS);
         const request = store.get(momentId);

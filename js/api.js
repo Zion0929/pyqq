@@ -4,7 +4,7 @@
  */
 
 // Vercel后端API的基础URL
-const API_BASE_URL = 'https://your-vercel-deployment-url.vercel.app/api';
+const API_BASE_URL = 'https://pyqq.vercel.app/api';
 
 // 重试配置
 const MAX_RETRIES = 3;
