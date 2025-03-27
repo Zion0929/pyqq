@@ -1,0 +1,22 @@
+{
+  "name": "wechat-like-app-backend",
+  "version": "1.0.0",
+  "description": "为模仿微信应用提供API服务，调用PaiCloud API获取AI回复和评论",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wechat",
+    "chat",
+    "moments",
+    "vercel",
+    "serverless",
+    "paicloud"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2"
+  }
+} 

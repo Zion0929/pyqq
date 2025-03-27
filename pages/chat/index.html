@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>聊天</title>
+    <link href="../../css/common.css" rel="stylesheet" />
+    <link href="../../css/chat.css" rel="stylesheet" />
+    <style type="text/css">
+        .contact-list {
+            padding-top: 44px;
+        }
+        
+        .contact-item {
+            display: flex;
+            padding: 10px 15px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+        
+        .contact-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 4px;
+            margin-right: 10px;
+            background-color: #f1f1f1;
+            overflow: hidden;
+        }
+        
+        .contact-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .contact-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .contact-name {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .contact-desc {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="header-left"></div>
+        <div class="header-title">聊天</div>
+        <div class="header-right"></div>
+    </div>
+    
+    <div class="content-view">
+        <div class="contact-list" id="contactList">
+            <!-- 联系人列表将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/chat.js"></script>
+    <script type="text/javascript">
+        // 初始预设AI好友数据
+        var initialAiFriends = [
+            {
+                id: 'ai1',
+                name: '小微',
+                avatar: '../../static/img/avatar1.jpg',
+                description: '我是一个友善的AI助手',
+                personality: '友善、乐于助人、耐心'
+            },
+            {
+                id: 'ai2',
+                name: '小智',
+                avatar: '../../static/img/avatar2.jpg',
+                description: '我对科技和历史非常感兴趣',
+                personality: '博学、理性、幽默'
+            },
+            {
+                id: 'ai3',
+                name: '小美',
+                avatar: '../../static/img/avatar3.jpg',
+                description: '我喜欢时尚和创意',
+                personality: '活泼、时尚、情感丰富'
+            }
+        ];
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化存储
+            initStorage().then(function() {
+                // 加载联系人列表
+                loadContacts();
+            });
+        });
+        
+        // 加载联系人列表
+        function loadContacts() {
+            // 获取好友列表
+            getAiFriends().then(function(friends) {
+                var contactList = document.getElementById('contactList');
+                contactList.innerHTML = '';
+                
+                friends.forEach(function(friend) {
+                    var contactItem = document.createElement('div');
+                    contactItem.className = 'contact-item';
+                    contactItem.setAttribute('data-id', friend.id);
+                    
+                    contactItem.innerHTML = `
+                        <div class="contact-avatar">
+                            <img src="${friend.avatar}" onerror="this.src='../../static/img/default-avatar.jpg'">
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-name">${friend.name}</div>
+                            <div class="contact-desc">${friend.description}</div>
+                        </div>
+                    `;
+                    
+                    contactItem.addEventListener('click', function() {
+                        // 打开聊天页面
+                        window.location.href = 'room.html?id=' + friend.id;
+                    });
+                    
+                    contactList.appendChild(contactItem);
+                });
+            });
+        }
+    </script>
+</body>
+</html> 

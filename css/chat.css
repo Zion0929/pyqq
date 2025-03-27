@@ -1,0 +1,241 @@
+/**
+ * 聊天界面样式
+ */
+
+/* 聊天列表样式 */
+.chat-list {
+    background-color: #f1f1f1;
+}
+
+.chat-item {
+    display: flex;
+    padding: 12px 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+
+.chat-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    margin-right: 12px;
+    background-color: #f1f1f1;
+    overflow: hidden;
+}
+
+.chat-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chat-info {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.chat-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.chat-name {
+    font-size: 16px;
+    color: #333;
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-time {
+    font-size: 12px;
+    color: #999;
+}
+
+.chat-message {
+    font-size: 14px;
+    color: #999;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-badge {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background-color: #f44336;
+    color: #fff;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+/* 聊天室样式 */
+.chat-messages {
+    padding: 10px;
+}
+
+.message {
+    margin-bottom: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.message.sent {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 8px;
+}
+
+.message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.message-content {
+    max-width: 70%;
+}
+
+.message-bubble {
+    padding: 10px;
+    border-radius: 3px;
+    word-break: break-word;
+    position: relative;
+}
+
+.message.received .message-bubble {
+    background-color: #fff;
+}
+
+.message.sent .message-bubble {
+    background-color: #95ec69;
+}
+
+.message-bubble::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.message.received .message-bubble::before {
+    left: -6px;
+    border-width: 6px 6px 6px 0;
+    border-color: transparent #fff transparent transparent;
+}
+
+.message.sent .message-bubble::before {
+    right: -6px;
+    border-width: 6px 0 6px 6px;
+    border-color: transparent transparent transparent #95ec69;
+}
+
+.message-time {
+    font-size: 10px;
+    color: #999;
+    padding: 2px 0;
+    text-align: center;
+}
+
+.message-status {
+    font-size: 10px;
+    color: #999;
+    text-align: right;
+    margin-top: 2px;
+}
+
+.system-message {
+    text-align: center;
+    margin: 15px 0;
+    padding: 0 15px;
+}
+
+.system-message-content {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #999;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 3px;
+}
+
+.chat-date {
+    text-align: center;
+    margin: 15px 0;
+    padding: 0 15px;
+    font-size: 12px;
+    color: #999;
+}
+
+.chat-date::before,
+.chat-date::after {
+    content: "";
+    display: inline-block;
+    width: 60px;
+    height: 1px;
+    background-color: #e5e5e5;
+    margin: 0 8px;
+    vertical-align: middle;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #999;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: typing-animation 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing-animation {
+    0%, 60%, 100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    30% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+} 

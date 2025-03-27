@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>微信聊天与朋友圈</title>
+    <link href="css/common.css" rel="stylesheet" />
+    <style type="text/css">
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #f7f7fa;
+            display: flex;
+            box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #7f8389;
+        }
+        
+        .tab-item.active {
+            color: #07c160;
+        }
+        
+        .tab-icon {
+            font-size: 24px;
+            line-height: 24px;
+        }
+        
+        .tab-label {
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        
+        .content {
+            position: absolute;
+            top: 0;
+            bottom: 50px;
+            width: 100%;
+        }
+        
+        .page {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="page" id="chatPage">
+            <iframe src="pages/chat/index.html" frameborder="0" width="100%" height="100%"></iframe>
+        </div>
+        <div class="page" id="momentsPage">
+            <iframe src="pages/moments/index.html" frameborder="0" width="100%" height="100%"></iframe>
+        </div>
+    </div>
+    
+    <div class="tab-bar">
+        <div class="tab-item active" data-page="chatPage">
+            <div class="tab-icon">💬</div>
+            <div class="tab-label">聊天</div>
+        </div>
+        <div class="tab-item" data-page="momentsPage">
+            <div class="tab-icon">📱</div>
+            <div class="tab-label">朋友圈</div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        document.addEventListener('plusready', function() {
+            // 禁止返回键关闭应用
+            plus.key.addEventListener('backbutton', function() {
+                // 处理返回键
+                if (plus.webview.currentWebview().id === plus.runtime.appid) {
+                    // 首页
+                    if (new Date().getTime() - lastBack < 2000) {
+                        plus.runtime.quit();
+                    } else {
+                        lastBack = new Date().getTime();
+                        plus.nativeUI.toast('再按一次退出应用');
+                    }
+                }
+            }, false);
+        });
+        
+        // 记录上次点击返回键时间
+        var lastBack = 0;
+        
+        // 标签切换
+        var tabItems = document.querySelectorAll('.tab-item');
+        var pages = document.querySelectorAll('.page');
+        
+        tabItems.forEach(function(item) {
+            item.addEventListener('click', function() {
+                // 移除所有活动标签和页面
+                tabItems.forEach(function(tabItem) {
+                    tabItem.classList.remove('active');
+                });
+                pages.forEach(function(page) {
+                    page.classList.remove('active');
+                });
+                
+                // 添加活动标签和页面
+                this.classList.add('active');
+                var pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html> 

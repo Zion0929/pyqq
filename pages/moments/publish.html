@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>发布朋友圈</title>
+    <link href="../../css/common.css" rel="stylesheet" />
+    <link href="../../css/moments.css" rel="stylesheet" />
+    <style type="text/css">
+        .publish-container {
+            padding: 44px 0 0;
+        }
+        
+        .publish-content {
+            padding: 15px;
+            background-color: #fff;
+        }
+        
+        .publish-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .publish-media {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .media-item, .media-add {
+            width: calc(33.333% - 8px);
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background-color: #f1f1f1;
+            position: relative;
+            overflow: hidden;
+            border-radius: 3px;
+        }
+        
+        .media-item:nth-child(3n), .media-add:nth-child(3n) {
+            margin-right: 0;
+        }
+        
+        .media-item::before, .media-add::before {
+            content: "";
+            display: block;
+            padding-top: 100%;
+        }
+        
+        .media-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .media-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #000;
+        }
+        
+        .media-item .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            z-index: 2;
+        }
+        
+        .media-add {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #999;
+            background-color: #f7f7f7;
+        }
+        
+        .media-options {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f7f7f7;
+            border-top: 1px solid #ddd;
+            display: none;
+            z-index: 100;
+        }
+        
+        .media-option {
+            padding: 15px 0;
+            text-align: center;
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .media-option:last-child {
+            border-bottom: none;
+        }
+        
+        .media-option:active {
+            background-color: #eee;
+        }
+        
+        .media-cancel {
+            margin-top: 10px;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .publish-actions {
+            padding: 15px;
+            background-color: #f7f7f7;
+        }
+        
+        .publish-btn {
+            width: 100%;
+            height: 44px;
+            background-color: #07c160;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .publish-btn:disabled {
+            background-color: #ccc;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 99;
+        }
+        
+        .video-indicator {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 25px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="header-left" onclick="goBack()">
+            <span style="font-size: 16px;">取消</span>
+        </div>
+        <div class="header-title">发布朋友圈</div>
+        <div class="header-right"></div>
+    </div>
+    
+    <div class="publish-container">
+        <div class="publish-content">
+            <textarea class="publish-textarea" id="contentInput" placeholder="分享新鲜事..."></textarea>
+            <div class="publish-media" id="mediaContainer">
+                <div class="media-add" id="mediaAdd">+</div>
+            </div>
+        </div>
+        
+        <div class="publish-actions">
+            <button class="publish-btn" id="publishBtn">发布</button>
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="media-options" id="mediaOptions">
+        <div class="media-option" id="optionPhoto">拍照</div>
+        <div class="media-option" id="optionAlbum">从相册选择</div>
+        <div class="media-option" id="optionVideo">拍摄视频</div>
+        <div class="media-option" id="optionVideoAlbum">从相册选择视频</div>
+        <div class="media-cancel" id="optionCancel">取消</div>
+    </div>
+    
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/moments.js"></script>
+    <script type="text/javascript">
+        var userId = 'user1'; // 当前用户ID
+        var mediaFiles = []; // 保存媒体文件列表
+        var hasVideo = false; // 是否包含视频
+        var mediaOptionsVisible = false; // 媒体选项是否可见
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化
+            initPublish();
+            
+            // 添加媒体按钮点击事件
+            document.getElementById('mediaAdd').addEventListener('click', showMediaOptions);
+            
+            // 发布按钮点击事件
+            document.getElementById('publishBtn').addEventListener('click', publishMoment);
+            
+            // 媒体选项点击事件
+            document.getElementById('optionPhoto').addEventListener('click', takePhoto);
+            document.getElementById('optionAlbum').addEventListener('click', pickFromAlbum);
+            document.getElementById('optionVideo').addEventListener('click', takeVideo);
+            document.getElementById('optionVideoAlbum').addEventListener('click', pickVideoFromAlbum);
+            document.getElementById('optionCancel').addEventListener('click', hideMediaOptions);
+            
+            // 遮罩层点击事件
+            document.getElementById('overlay').addEventListener('click', hideMediaOptions);
+            
+            // 监听输入变化，更新发布按钮状态
+            document.getElementById('contentInput').addEventListener('input', updatePublishButton);
+        });
+        
+        // 初始化发布页面
+        function initPublish() {
+            // 更新发布按钮状态
+            updatePublishButton();
+        }
+        
+        // 更新发布按钮状态
+        function updatePublishButton() {
+            var content = document.getElementById('contentInput').value.trim();
+            var publishBtn = document.getElementById('publishBtn');
+            
+            // 内容为空且没有媒体文件时，禁用发布按钮
+            if (!content && mediaFiles.length === 0) {
+                publishBtn.disabled = true;
+            } else {
+                publishBtn.disabled = false;
+            }
+        }
+        
+        // 显示媒体选项
+        function showMediaOptions() {
+            // 如果已经有视频，不允许添加更多媒体
+            if (hasVideo) {
+                showToast('视频和图片不能同时添加');
+                return;
+            }
+            
+            // 如果已经有9张图片，不允许添加更多
+            if (!hasVideo && mediaFiles.length >= 9) {
+                showToast('最多只能添加9张图片');
+                return;
+            }
+            
+            // 显示媒体选项和遮罩层
+            document.getElementById('mediaOptions').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            mediaOptionsVisible = true;
+        }
+        
+        // 隐藏媒体选项
+        function hideMediaOptions() {
+            document.getElementById('mediaOptions').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            mediaOptionsVisible = false;
+        }
+        
+        // 拍照
+        function takePhoto() {
+            hideMediaOptions();
+            
+            // 调用系统相机
+            plus.camera.getCamera().captureImage(function(path) {
+                // 转换为本地URL
+                plus.io.resolveLocalFileSystemURL(path, function(entry) {
+                    addMediaFile(entry.toLocalURL(), 'image');
+                });
+            }, function(error) {
+                console.error('拍照失败: ' + error.message);
+                showToast('拍照失败');
+            }, {
+                filename: '_doc/camera/',
+                index: 1
+            });
+        }
+        
+        // 从相册选择图片
+        function pickFromAlbum() {
+            hideMediaOptions();
+            
+            // 调用系统相册
+            plus.gallery.pick(function(paths) {
+                // 支持多选
+                for (var i = 0; i < paths.files.length; i++) {
+                    // 如果已经有视频或图片数量达到上限，跳出循环
+                    if (hasVideo || mediaFiles.length >= 9) break;
+                    
+                    addMediaFile(paths.files[i], 'image');
+                }
+            }, function(error) {
+                console.error('选择图片失败: ' + error.message);
+                showToast('选择图片失败');
+            }, {
+                filter: 'image',
+                multiple: true,
+                maximum: 9 - mediaFiles.length,
+                system: false
+            });
+        }
+        
+        // 拍摄视频
+        function takeVideo() {
+            hideMediaOptions();
+            
+            // 如果已经有图片，不允许添加视频
+            if (mediaFiles.length > 0 && !hasVideo) {
+                showToast('图片和视频不能同时添加');
+                return;
+            }
+            
+            // 调用系统相机录制视频
+            plus.camera.getCamera().startVideoCapture(function(path) {
+                // 转换为本地URL
+                plus.io.resolveLocalFileSystemURL(path, function(entry) {
+                    addMediaFile(entry.toLocalURL(), 'video');
+                });
+            }, function(error) {
+                console.error('录制视频失败: ' + error.message);
+                showToast('录制视频失败');
+            }, {
+                filename: '_doc/camera/',
+                index: 1
+            });
+        }
+        
+        // 从相册选择视频
+        function pickVideoFromAlbum() {
+            hideMediaOptions();
+            
+            // 如果已经有图片，不允许添加视频
+            if (mediaFiles.length > 0 && !hasVideo) {
+                showToast('图片和视频不能同时添加');
+                return;
+            }
+            
+            // 调用系统相册
+            plus.gallery.pick(function(path) {
+                addMediaFile(path, 'video');
+            }, function(error) {
+                console.error('选择视频失败: ' + error.message);
+                showToast('选择视频失败');
+            }, {
+                filter: 'video',
+                system: false
+            });
+        }
+        
+        // 添加媒体文件
+        function addMediaFile(path, type) {
+            // 如果是视频，清空之前的媒体文件
+            if (type === 'video' && !hasVideo) {
+                mediaFiles = [];
+                hasVideo = true;
+                document.getElementById('mediaContainer').innerHTML = '<div class="media-add" id="mediaAdd">+</div>';
+                document.getElementById('mediaAdd').addEventListener('click', showMediaOptions);
+            }
+            
+            // 如果是图片，但已经有视频，不允许添加
+            if (type === 'image' && hasVideo) {
+                showToast('视频和图片不能同时添加');
+                return;
+            }
+            
+            // 添加到媒体文件列表
+            var fileIndex = mediaFiles.length;
+            mediaFiles.push({
+                path: path,
+                type: type
+            });
+            
+            // 创建媒体显示元素
+            var mediaItem = document.createElement('div');
+            mediaItem.className = 'media-item';
+            mediaItem.setAttribute('data-index', fileIndex);
+            
+            // 根据类型创建不同内容
+            if (type === 'image') {
+                mediaItem.innerHTML = `
+                    <img src="${path}">
+                    <div class="delete-btn" data-index="${fileIndex}">×</div>
+                `;
+            } else if (type === 'video') {
+                mediaItem.innerHTML = `
+                    <video class="media-video" src="${path}"></video>
+                    <div class="video-indicator">视频</div>
+                    <div class="delete-btn" data-index="${fileIndex}">×</div>
+                `;
+            }
+            
+            // 插入到添加按钮之前
+            var mediaAdd = document.getElementById('mediaAdd');
+            document.getElementById('mediaContainer').insertBefore(mediaItem, mediaAdd);
+            
+            // 如果达到上限，隐藏添加按钮
+            if (hasVideo || mediaFiles.length >= 9) {
+                mediaAdd.style.display = 'none';
+            }
+            
+            // 设置删除按钮点击事件
+            var deleteBtn = mediaItem.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var index = parseInt(this.getAttribute('data-index'));
+                deleteMediaFile(index);
+            });
+            
+            // 更新发布按钮状态
+            updatePublishButton();
+        }
+        
+        // 删除媒体文件
+        function deleteMediaFile(index) {
+            // 从列表中删除
+            var deletedFile = mediaFiles.splice(index, 1)[0];
+            
+            // 如果删除的是视频，重置视频标记
+            if (deletedFile.type === 'video') {
+                hasVideo = false;
+            }
+            
+            // 刷新媒体显示
+            refreshMediaView();
+            
+            // 更新发布按钮状态
+            updatePublishButton();
+        }
+        
+        // 刷新媒体显示
+        function refreshMediaView() {
+            var mediaContainer = document.getElementById('mediaContainer');
+            var mediaAdd = document.getElementById('mediaAdd');
+            
+            // 清空现有内容，保留添加按钮
+            mediaContainer.innerHTML = '';
+            mediaContainer.appendChild(mediaAdd);
+            
+            // 重新显示所有媒体文件
+            mediaFiles.forEach(function(file, index) {
+                var mediaItem = document.createElement('div');
+                mediaItem.className = 'media-item';
+                mediaItem.setAttribute('data-index', index);
+                
+                if (file.type === 'image') {
+                    mediaItem.innerHTML = `
+                        <img src="${file.path}">
+                        <div class="delete-btn" data-index="${index}">×</div>
+                    `;
+                } else if (file.type === 'video') {
+                    mediaItem.innerHTML = `
+                        <video class="media-video" src="${file.path}"></video>
+                        <div class="video-indicator">视频</div>
+                        <div class="delete-btn" data-index="${index}">×</div>
+                    `;
+                }
+                
+                mediaContainer.insertBefore(mediaItem, mediaAdd);
+                
+                // 设置删除按钮点击事件
+                var deleteBtn = mediaItem.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var idx = parseInt(this.getAttribute('data-index'));
+                    deleteMediaFile(idx);
+                });
+            });
+            
+            // 显示或隐藏添加按钮
+            if (hasVideo || mediaFiles.length >= 9) {
+                mediaAdd.style.display = 'none';
+            } else {
+                mediaAdd.style.display = 'block';
+            }
+        }
+        
+        // 发布朋友圈
+        function publishMoment() {
+            var content = document.getElementById('contentInput').value.trim();
+            
+            // 内容为空且没有媒体文件时，不允许发布
+            if (!content && mediaFiles.length === 0) {
+                showToast('请输入内容或添加图片/视频');
+                return;
+            }
+            
+            // 禁用发布按钮，防止重复提交
+            document.getElementById('publishBtn').disabled = true;
+            
+            // 显示加载提示
+            showToast('发布中...');
+            
+            // 创建朋友圈对象
+            var moment = {
+                id: generateId(),
+                userId: userId,
+                userName: '我',
+                content: content,
+                timestamp: Date.now(),
+                images: [],
+                video: null,
+                comments: []
+            };
+            
+            // 处理媒体文件
+            mediaFiles.forEach(function(file) {
+                if (file.type === 'image') {
+                    moment.images.push(file.path);
+                } else if (file.type === 'video') {
+                    moment.video = file.path;
+                }
+            });
+            
+            // 保存朋友圈
+            saveMoment(moment).then(function() {
+                showToast('发布成功');
+                
+                // 延迟返回，让用户看到提示
+                setTimeout(function() {
+                    goBack();
+                }, 1000);
+            }).catch(function(error) {
+                console.error('发布朋友圈失败:', error);
+                showToast('发布失败');
+                
+                // 恢复发布按钮
+                document.getElementById('publishBtn').disabled = false;
+            });
+        }
+        
+        // 返回上一页
+        function goBack() {
+            // 如果媒体选项正在显示，则隐藏它
+            if (mediaOptionsVisible) {
+                hideMediaOptions();
+                return;
+            }
+            
+            // 返回上一页
+            window.history.back();
+        }
+        
+        // 生成唯一ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+        
+        // 显示Toast提示
+        function showToast(message) {
+            var toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(function() {
+                document.body.removeChild(toast);
+            }, 1500);
+        }
+    </script>
+</body>
+</html> 

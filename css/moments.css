@@ -1,0 +1,388 @@
+/**
+ * 朋友圈样式
+ */
+
+/* 朋友圈头部 */
+.moments-header {
+    height: 240px;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.moments-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.user-info {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.user-name {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.user-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 朋友圈列表 */
+.moments-container {
+    background-color: #fff;
+    padding-bottom: 50px; /* 给底部按钮留出空间 */
+}
+
+.moment-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.moment-header {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.moment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+.moment-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.moment-info {
+    flex: 1;
+}
+
+.moment-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #576b95;
+    margin-bottom: 2px;
+}
+
+.moment-time {
+    font-size: 12px;
+    color: #999;
+}
+
+.moment-content {
+    margin-left: 50px;
+    margin-bottom: 10px;
+}
+
+.moment-text {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    word-break: break-word;
+}
+
+/* 朋友圈图片 */
+.moment-images {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.moment-image {
+    width: calc(33.333% - 6px);
+    margin-right: 8px;
+    margin-bottom: 8px;
+    background-color: #f1f1f1;
+    position: relative;
+    overflow: hidden;
+}
+
+.moment-image:nth-child(3n) {
+    margin-right: 0;
+}
+
+.moment-image::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.moment-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 单图样式 */
+.moment-images.single .moment-image {
+    width: 200px;
+    max-width: 66%;
+    margin-right: 0;
+}
+
+.moment-images.single .moment-image::before {
+    padding-top: 75%;
+}
+
+/* 朋友圈视频 */
+.moment-video {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    background-color: #000;
+    margin-bottom: 10px;
+}
+
+/* 朋友圈操作 */
+.moment-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-left: 50px;
+}
+
+.moment-like,
+.moment-comment {
+    font-size: 14px;
+    color: #576b95;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.moment-actions-menu {
+    display: none;
+    position: absolute;
+    right: 15px;
+    background-color: #4c4c4c;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.moment-actions-menu.show {
+    display: block;
+}
+
+.moment-action-item {
+    padding: 10px 15px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    min-width: 80px;
+}
+
+.moment-actions-menu::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: 20px;
+    border-width: 0 6px 6px;
+    border-style: solid;
+    border-color: transparent transparent #4c4c4c;
+}
+
+/* 朋友圈评论区 */
+.moment-comments {
+    margin-left: 50px;
+    margin-top: 10px;
+    background-color: #f7f7f7;
+    border-radius: 3px;
+    padding: 8px 10px;
+}
+
+.comment-item {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+.comment-item:last-child {
+    margin-bottom: 0;
+}
+
+.comment-name {
+    color: #576b95;
+    font-weight: bold;
+}
+
+/* 朋友圈点赞区 */
+.moment-likes {
+    margin-left: 50px;
+    margin-top: 10px;
+    background-color: #f7f7f7;
+    border-radius: 3px 3px 0 0;
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.like-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: #576b95;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 16px;
+    font-size: 10px;
+    margin-right: 5px;
+    vertical-align: -3px;
+}
+
+.like-names {
+    display: inline;
+    font-size: 14px;
+    color: #576b95;
+}
+
+/* 发布按钮 */
+.publish-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #07c160;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+/* 发布页面样式 */
+.publish-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5;
+    z-index: 200;
+}
+
+.publish-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.publish-media {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 15px 15px;
+}
+
+.media-item {
+    width: calc(33.333% - 8px);
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: #f1f1f1;
+    position: relative;
+    overflow: hidden;
+}
+
+.media-item:nth-child(3n) {
+    margin-right: 0;
+}
+
+.media-item::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.media-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.media-item .delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.media-add {
+    width: calc(33.333% - 8px);
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: #f1f1f1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #999;
+}
+
+.media-add:nth-child(3n) {
+    margin-right: 0;
+}
+
+.media-add::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.media-add-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} 

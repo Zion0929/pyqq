@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>朋友圈</title>
+    <link href="../../css/common.css" rel="stylesheet" />
+    <link href="../../css/moments.css" rel="stylesheet" />
+    <style type="text/css">
+        .moments-header {
+            height: 240px;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .moments-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+        
+        .user-info {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .user-name {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 5px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .moments-container {
+            background-color: #fff;
+            padding-bottom: 20px;
+        }
+        
+        .moment-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .moment-header {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .moment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 3px;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+        
+        .moment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .moment-info {
+            flex: 1;
+        }
+        
+        .moment-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #576b95;
+            margin-bottom: 2px;
+        }
+        
+        .moment-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .moment-content {
+            margin-left: 50px;
+            margin-bottom: 10px;
+        }
+        
+        .moment-text {
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+        
+        .moment-images {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .moment-image {
+            width: calc(33.333% - 6px);
+            margin-right: 8px;
+            margin-bottom: 8px;
+            background-color: #f1f1f1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .moment-image:nth-child(3n) {
+            margin-right: 0;
+        }
+        
+        .moment-image::before {
+            content: "";
+            display: block;
+            padding-top: 100%;
+        }
+        
+        .moment-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .moment-video {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            background-color: #000;
+            margin-bottom: 10px;
+        }
+        
+        .moment-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-left: 50px;
+        }
+        
+        .moment-like, .moment-comment {
+            font-size: 14px;
+            color: #576b95;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        .moment-comments {
+            margin-left: 50px;
+            margin-top: 10px;
+            background-color: #f7f7f7;
+            border-radius: 3px;
+            padding: 8px 10px;
+        }
+        
+        .comment-item {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+        
+        .comment-name {
+            color: #576b95;
+            font-weight: bold;
+        }
+        
+        .publish-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #07c160;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="header-left"></div>
+        <div class="header-title">朋友圈</div>
+        <div class="header-right" id="refreshBtn">🔄</div>
+    </div>
+    
+    <div class="content-view">
+        <div class="moments-header">
+            <img src="../../static/img/moments-cover.jpg" class="moments-cover" onerror="this.src='../../static/img/default-cover.jpg'">
+            <div class="user-info">
+                <div class="user-name">我</div>
+                <div class="user-avatar">
+                    <img src="../../static/img/user-avatar.jpg" onerror="this.src='../../static/img/default-avatar.jpg'">
+                </div>
+            </div>
+        </div>
+        
+        <div class="moments-container" id="momentsList">
+            <!-- 朋友圈内容将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <div class="publish-btn" id="publishBtn">+</div>
+    
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/moments.js"></script>
+    <script type="text/javascript">
+        var userId = 'user1'; // 当前用户ID
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化存储
+            initStorage().then(function() {
+                // 加载朋友圈
+                loadMoments();
+            });
+            
+            // 设置发布按钮点击事件
+            document.getElementById('publishBtn').addEventListener('click', function() {
+                window.location.href = 'publish.html';
+            });
+            
+            // 设置刷新按钮点击事件
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                loadMoments();
+                showToast('刷新成功');
+            });
+        });
+        
+        // 加载朋友圈
+        function loadMoments() {
+            // 显示加载中
+            var momentsList = document.getElementById('momentsList');
+            momentsList.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            
+            // 获取朋友圈内容
+            getMoments().then(function(moments) {
+                // 排序，最新的在前面
+                moments.sort(function(a, b) {
+                    return b.timestamp - a.timestamp;
+                });
+                
+                renderMoments(moments);
+                
+                // 加载AI评论
+                loadAiComments();
+            }).catch(function(error) {
+                console.error('加载朋友圈失败:', error);
+                showToast('加载朋友圈失败');
+                
+                momentsList.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">加载失败，请重试</div>';
+            });
+        }
+        
+        // 渲染朋友圈
+        function renderMoments(moments) {
+            var momentsList = document.getElementById('momentsList');
+            momentsList.innerHTML = '';
+            
+            if (moments.length === 0) {
+                momentsList.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">暂无朋友圈内容</div>';
+                return;
+            }
+            
+            moments.forEach(function(moment) {
+                var momentElement = createMomentElement(moment);
+                momentsList.appendChild(momentElement);
+            });
+        }
+        
+        // 创建朋友圈元素
+        function createMomentElement(moment) {
+            var momentDiv = document.createElement('div');
+            momentDiv.className = 'moment-item';
+            momentDiv.setAttribute('data-id', moment.id);
+            
+            var avatar = moment.userId === userId ? '../../static/img/user-avatar.jpg' : 
+                                                    '../../static/img/avatar' + (parseInt(moment.userId.replace('ai', '')) || 1) + '.jpg';
+            var name = moment.userId === userId ? '我' : moment.userName || 'AI好友';
+            
+            // 构建HTML结构
+            var html = `
+                <div class="moment-header">
+                    <div class="moment-avatar">
+                        <img src="${avatar}" onerror="this.src='../../static/img/default-avatar.jpg'">
+                    </div>
+                    <div class="moment-info">
+                        <div class="moment-name">${name}</div>
+                        <div class="moment-time">${formatTime(moment.timestamp)}</div>
+                    </div>
+                </div>
+                <div class="moment-content">
+                    <div class="moment-text">${moment.content}</div>
+            `;
+            
+            // 图片内容
+            if (moment.images && moment.images.length > 0) {
+                html += '<div class="moment-images">';
+                moment.images.forEach(function(image) {
+                    html += `
+                        <div class="moment-image">
+                            <img src="${image}" onerror="this.src='../../static/img/image-error.jpg'">
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            // 视频内容
+            if (moment.video) {
+                html += `
+                    <video class="moment-video" controls>
+                        <source src="${moment.video}" type="video/mp4">
+                        您的浏览器不支持视频播放
+                    </video>
+                `;
+            }
+            
+            html += '</div>';
+            
+            // 操作区域
+            html += `
+                <div class="moment-actions">
+                    <div class="moment-like" onclick="likeMoment('${moment.id}')">👍 点赞</div>
+                    <div class="moment-comment" onclick="showCommentInput('${moment.id}')">💬 评论</div>
+                </div>
+            `;
+            
+            // 评论区域
+            if (moment.comments && moment.comments.length > 0) {
+                html += '<div class="moment-comments">';
+                moment.comments.forEach(function(comment) {
+                    var commentName = comment.userId === userId ? '我' : comment.userName || 'AI好友';
+                    html += `
+                        <div class="comment-item">
+                            <span class="comment-name">${commentName}：</span>${comment.content}
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            momentDiv.innerHTML = html;
+            return momentDiv;
+        }
+        
+        // 加载AI评论
+        function loadAiComments() {
+            // 获取AI好友
+            getAiFriends().then(function(friends) {
+                // 获取最近发布的朋友圈
+                getMoments().then(function(moments) {
+                    // 筛选出用户发布的、尚未有足够AI评论的朋友圈
+                    var userMoments = moments.filter(function(moment) {
+                        return moment.userId === userId && 
+                               (!moment.comments || moment.comments.filter(function(c) { return c.userId !== userId; }).length < 2);
+                    });
+                    
+                    userMoments.forEach(function(moment) {
+                        // 为每个AI好友随机选择是否评论（这里示例50%概率评论）
+                        friends.forEach(function(friend) {
+                            if (Math.random() > 0.5) {
+                                // 该AI好友是否已经评论过
+                                var hasCommented = moment.comments && moment.comments.some(function(c) {
+                                    return c.userId === friend.id;
+                                });
+                                
+                                if (!hasCommented) {
+                                    // 发送请求获取AI评论
+                                    getAiComment(friend, moment).then(function(commentContent) {
+                                        if (commentContent) {
+                                            // 创建评论对象
+                                            var comment = {
+                                                id: generateId(),
+                                                momentId: moment.id,
+                                                userId: friend.id,
+                                                userName: friend.name,
+                                                content: commentContent,
+                                                timestamp: Date.now()
+                                            };
+                                            
+                                            // 保存评论
+                                            addMomentComment(comment).then(function() {
+                                                // 刷新朋友圈
+                                                loadMoments();
+                                            });
+                                        }
+                                    }).catch(function(error) {
+                                        console.error('获取AI评论失败:', error);
+                                    });
+                                }
+                            }
+                        });
+                    });
+                });
+            });
+        }
+        
+        // 点赞朋友圈
+        function likeMoment(momentId) {
+            showToast('点赞成功');
+            // 实际应用中，这里应该实现点赞逻辑
+        }
+        
+        // 显示评论输入框
+        function showCommentInput(momentId) {
+            var content = prompt('请输入评论内容');
+            if (content && content.trim()) {
+                // 创建评论对象
+                var comment = {
+                    id: generateId(),
+                    momentId: momentId,
+                    userId: userId,
+                    userName: '我',
+                    content: content.trim(),
+                    timestamp: Date.now()
+                };
+                
+                // 保存评论
+                addMomentComment(comment).then(function() {
+                    // 刷新朋友圈
+                    loadMoments();
+                    showToast('评论成功');
+                }).catch(function(error) {
+                    console.error('评论失败:', error);
+                    showToast('评论失败');
+                });
+            }
+        }
+        
+        // 格式化时间
+        function formatTime(timestamp) {
+            var now = new Date();
+            var date = new Date(timestamp);
+            var diff = now - date;
+            
+            // 小于1分钟
+            if (diff < 60 * 1000) {
+                return '刚刚';
+            }
+            
+            // 小于1小时
+            if (diff < 60 * 60 * 1000) {
+                return Math.floor(diff / (60 * 1000)) + '分钟前';
+            }
+            
+            // 小于24小时
+            if (diff < 24 * 60 * 60 * 1000) {
+                return Math.floor(diff / (60 * 60 * 1000)) + '小时前';
+            }
+            
+            // 小于30天
+            if (diff < 30 * 24 * 60 * 60 * 1000) {
+                return Math.floor(diff / (24 * 60 * 60 * 1000)) + '天前';
+            }
+            
+            // 大于30天，显示具体日期
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            var day = date.getDate().toString().padStart(2, '0');
+            return year + '-' + month + '-' + day;
+        }
+        
+        // 生成唯一ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+        
+        // 显示Toast提示
+        function showToast(message) {
+            var toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(function() {
+                document.body.removeChild(toast);
+            }, 1500);
+        }
+    </script>
+</body>
+</html> 
